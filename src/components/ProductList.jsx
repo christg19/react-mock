@@ -21,7 +21,7 @@ function ProductList() {
 
   return (
     <div className='homeContainer'>
-      <Link to="/home">
+      <Link to="/">
         <img src={backIcon} className='backIcon' />
       </Link>
       <div className='list'>

@@ -72,7 +72,7 @@ function ProfileDetails() {
     axios.delete(`http://localhost:3000/profile/${id}`)
       .then(() => {
         closeDialog();
-        navigate('/home');
+        navigate('/');
       })
       .catch(error => {
         console.error('Error al eliminar el producto', error);

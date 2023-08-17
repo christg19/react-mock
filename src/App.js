@@ -6,7 +6,6 @@ import ProfileList from './components/ProfileList';
 import ClientDetails from './components/clientDetails';
 import AnimatedBackground from './components/animatedBackground';
 import Home from './components/mainpage';
-import Icons from './components/iconsmain';
 import ProductDetails from './components/productDetails';
 import ProfileDetails from './components/profileDetails';
 import './styles/clientlist.css'
@@ -17,8 +16,7 @@ function App() {
     <div className='app'>
     <AnimatedBackground>
       <Routes>
-        <Route path="/icon" element={<Icons />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/client" element={<ClientList />} />
         <Route path="/client/:id" element={<ClientDetails />} />
         <Route path="/product" element={<ProductList />} />
