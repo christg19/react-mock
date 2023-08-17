@@ -1,0 +1,26 @@
+/* styles/clientlist.css */
+.backIcon{
+  padding: 10px;
+  width: 50px;
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.backIcon:hover {
+  transform: scale(1.1); 
+  color: #FFD700; 
+}
+
+.tableCell{
+  font-weight: bold;
+}
+
+
+.list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+

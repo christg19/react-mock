@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Clash+Grotesk:wght@300;400;500&display=swap");
+
+.typing-text {
+    display: flex;
+    justify-content: center;
+    font-family: 'Clash Grotesk, sans-serif';
+    font-size: 36px; 
+    color: yellow; 
+    text-align: center; 
+    margin-bottom: 20px; 
+  }

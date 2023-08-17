@@ -1,0 +1,20 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    justify-content: space-evenly;
+    overflow: hidden;
+  }
+  
+  .icon {
+    margin: 15rem; 
+  }
+
+  @media (max-width: 768px) {
+    .center-container {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+  }
