@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
 import axios from 'axios';
 import backIcon from '../styles/back.svg'
 import '../styles/clientlist.css'
 
 function ProductList() {
   const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState({
+    productName: '',
+    price: '',
+    stock: '',
+  });
 
   useEffect(() => {
     axios.get('http://localhost:3000/product')
@@ -17,6 +22,18 @@ function ProductList() {
   const tableHeaderCellStyle = {
     fontWeight: 'bold', 
     backgroundColor: '#f5f5f5'
+  };
+
+  const handleAddProduct = () => {
+    axios.post('http://localhost:3000/product', newProduct)
+      .then(response => {
+        console.log('Nuevo producto agregado:', response.data);
+        setProducts([...products, response.data]);
+        setNewProduct({ productName: '', price: '', stock: '' });
+      })
+      .catch(error => {
+        console.error('Error al agregar el producto:', error);
+      });
   };
 
   return (
@@ -53,6 +70,35 @@ function ProductList() {
                     </TableCell>
                   </TableRow>
                 ))}
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    <TextField
+                      placeholder="Nombre de Producto"
+                      value={newProduct.productName}
+                      onChange={e => setNewProduct({ ...newProduct, productName: e.target.value })}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      placeholder="Precio"
+                      value={newProduct.price}
+                      onChange={e => setNewProduct({ ...newProduct, price: e.target.value })}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      placeholder="Stock"
+                      value={newProduct.stock}
+                      onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="primary" onClick={handleAddProduct}>
+                      Agregar Producto
+                    </Button>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
@@ -63,3 +109,4 @@ function ProductList() {
 }
 
 export default ProductList;
+
