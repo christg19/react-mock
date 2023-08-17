@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import axios from 'axios';
-import backIcon from '../styles/back.svg'
-import '../styles/clientlist.css'
+import backIcon from '../styles/back.svg';
+import '../styles/clientlist.css';
 
 function ClientList() {
   const [clients, setClients] = useState([]);
@@ -13,6 +13,7 @@ function ClientList() {
     email: '',
     tel: '',
   });
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:3000/client')
@@ -26,6 +27,11 @@ function ClientList() {
   };
 
   const handleAddClient = () => {
+    if (newClient.name === '' || newClient.last_name === '' || newClient.email === '' || newClient.tel === '') {
+      setOpenDialog(true);
+      return;
+    }
+
     axios.post('http://localhost:3000/client', newClient)
       .then(response => {
         console.log('Nuevo cliente agregado:', response.data);
@@ -35,6 +41,10 @@ function ClientList() {
       .catch(error => {
         console.error('Error al agregar el cliente:', error);
       });
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -114,6 +124,17 @@ function ClientList() {
           </TableContainer>
         </Container>
       </div>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Campos Vacíos</DialogTitle>
+        <DialogContent>
+          Complete todos los campos antes de agregar un cliente.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

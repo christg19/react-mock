@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import axios from 'axios';
-import backIcon from '../styles/back.svg'
-import '../styles/clientlist.css'
+import backIcon from '../styles/back.svg';
+import '../styles/clientlist.css';
 
 function ProfileList() {
   const [profiles, setProfiles] = useState([]);
@@ -12,6 +12,7 @@ function ProfileList() {
     password: '',
     rol: '',
   });
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:3000/profile')
@@ -25,6 +26,11 @@ function ProfileList() {
   };
 
   const handleAddProfile = () => {
+    if (newProfile.username === '' || newProfile.password === '' || newProfile.rol === '') {
+      setOpenDialog(true);
+      return;
+    }
+
     axios.post('http://localhost:3000/profile', newProfile)
       .then(response => {
         console.log('Nuevo perfil agregado:', response.data);
@@ -34,6 +40,10 @@ function ProfileList() {
       .catch(error => {
         console.error('Error al agregar el perfil:', error);
       });
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -105,8 +115,20 @@ function ProfileList() {
           </TableContainer>
         </Container>
       </div>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Campos Vacíos</DialogTitle>
+        <DialogContent>
+          Complete todos los campos antes de agregar un perfil.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
 
 export default ProfileList;
+

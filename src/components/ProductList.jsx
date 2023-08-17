@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import axios from 'axios';
-import backIcon from '../styles/back.svg'
-import '../styles/clientlist.css'
+import backIcon from '../styles/back.svg';
+import '../styles/clientlist.css';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -12,6 +12,7 @@ function ProductList() {
     price: '',
     stock: '',
   });
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:3000/product')
@@ -25,6 +26,11 @@ function ProductList() {
   };
 
   const handleAddProduct = () => {
+    if (newProduct.productName === '' || newProduct.price === '' || newProduct.stock === '') {
+      setOpenDialog(true);
+      return;
+    }
+
     axios.post('http://localhost:3000/product', newProduct)
       .then(response => {
         console.log('Nuevo producto agregado:', response.data);
@@ -34,6 +40,10 @@ function ProductList() {
       .catch(error => {
         console.error('Error al agregar el producto:', error);
       });
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -104,9 +114,21 @@ function ProductList() {
           </TableContainer>
         </Container>
       </div>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Campos Vacíos</DialogTitle>
+        <DialogContent>
+          Complete todos los campos antes de agregar un producto.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
 
 export default ProductList;
+
 
